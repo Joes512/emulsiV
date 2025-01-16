@@ -1,3 +1,4 @@
+// import * as chai from "chai";
 
 import {assemble, disassemble, disassemblePseudo} from "./src/assembly.js"
 
@@ -6,7 +7,7 @@ function testInstruction({asm, fields, dis=true, pseudo=false}) {
         it(`assembles instruction: ${asm}`, () => {
             const result = assemble(asm);
             for (let key in fields) {
-                chai.assert.strictEqual(result[key], fields[key]);
+                Chai.assert.strictEqual(result[key], fields[key]);
             }
         });
     }
@@ -14,12 +15,12 @@ function testInstruction({asm, fields, dis=true, pseudo=false}) {
     if (dis) {
         if (!pseudo) {
             it(`disassembles instruction: ${asm}`, () => {
-                chai.assert.equal(disassemble(fields), asm);
+                Chai.assert.equal(disassemble(fields), asm);
             });
         }
         else {
             it(`disassembles pseudo-instruction: ${asm}`, () => {
-                chai.assert.equal(disassemblePseudo(fields), asm);
+                Chai.assert.equal(disassemblePseudo(fields), asm);
             });
         }
     }

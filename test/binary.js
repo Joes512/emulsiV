@@ -1,3 +1,4 @@
+// import * as chai from "chai";
 
 import {encode, decode} from "./src/binary.js"
 
@@ -5,12 +6,12 @@ function testInstruction({asm, word, fields}) {
     it(`decodes instruction: ${asm}`, () => {
         const result = decode(word);
         for (let key in fields) {
-            chai.assert.strictEqual(result[key], fields[key]);
+            Chai.assert.strictEqual(result[key], fields[key]);
         }
     });
     if (fields.name !== "invalid") {
         it(`encodes instruction: ${asm}`, () => {
-            chai.assert.equal(encode(fields), word);
+            Chai.assert.equal(encode(fields), word);
         });
     }
 }
