@@ -39,6 +39,7 @@ const ACTION_TABLE = {
     srl     : {src1: "x1", src2: "x2",  aluOp: "srl",  wbMem: "r"                 },
     sra     : {src1: "x1", src2: "x2",  aluOp: "sra",  wbMem: "r"                 },
     or      : {src1: "x1", src2: "x2",  aluOp: "or",   wbMem: "r"                 },
+    mul     : {src1: "x1", src2: "x2",  aluOp: "mul",  wbMem: "r"                 }, // mul instruction
     and     : {src1: "x1", src2: "x2",  aluOp: "and",  wbMem: "r"                 },
     mret    : {                                                                   },
     invalid : {                                                                   },
@@ -124,6 +125,7 @@ export class Processor {
             case "or":   this.aluResult = a | b;                             break;
             case "and":  this.aluResult = a & b;                             break;
             case "sub":  this.aluResult = signed(a - b);                     break;
+            case "mul":  this.aluResult = signed(a) * signed(b);             break; // Add MUL instruction
         }
 
         this.branchTaken = this.datapath.branch && this.datapath.branch === "al";

@@ -47,6 +47,7 @@ const ASM_TABLE = {
     sra   : "d12",
     or    : "d12",
     and   : "d12",
+    mul   : "d12",  // Add MUL instruction
     mret  : "",
     // Pseudo-instructions
     nop    : "",
