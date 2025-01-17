@@ -40,7 +40,9 @@ const ACTION_TABLE = {
     sra     : {src1: "x1", src2: "x2",  aluOp: "sra",  wbMem: "r"                 },
     or      : {src1: "x1", src2: "x2",  aluOp: "or",   wbMem: "r"                 },
     mul     : {src1: "x1", src2: "x2",  aluOp: "mul",  wbMem: "r"                 }, // mul instruction
-    mulh    : {src1: "x1", src2: "x2",  aluOp: "mulh",  wbMem: "r"                 }, // mul instruction
+    mulh    : {src1: "x1", src2: "x2",  aluOp: "mulh",  wbMem: "r"                }, // mulh instruction
+    mulhu   : {src1: "x1", src2: "x2",  aluOp: "mulhu",  wbMem: "r"               }, // mulhu instruction
+    mulhsu  : {src1: "x1", src2: "x2",  aluOp: "mulhsu",  wbMem: "r"              }, // mulhsu instruction
     and     : {src1: "x1", src2: "x2",  aluOp: "and",  wbMem: "r"                 },
     mret    : {                                                                   },
     invalid : {                                                                   },
@@ -115,19 +117,24 @@ export class Processor {
         // Perform ALU operation
         this.aluResult = 0;
         switch (this.datapath.aluOp) {
-            case "b":    this.aluResult = b;                                                        break;
-            case "add":  this.aluResult = signed(a + b);                                            break;
-            case "sll":  this.aluResult = a << unsignedSlice(b, 4, 0);                              break;
-            case "slt":  this.aluResult = signed(a) < signed(b) ? 1 : 0;                            break;
-            case "sltu": this.aluResult = unsigned(a) < unsigned(b) ? 1 : 0;                        break;
-            case "xor":  this.aluResult = a ^ b  ;                                                  break;
-            case "srl":  this.aluResult = a >>> unsignedSlice(b, 4, 0);                             break;
-            case "sra":  this.aluResult = a >>  unsignedSlice(b, 4, 0);                             break;
-            case "or":   this.aluResult = a | b;                                                    break;
-            case "and":  this.aluResult = a & b;                                                    break;
-            case "sub":  this.aluResult = signed(a - b);                                            break;
-            case "mul":  this.aluResult = signed(a) * signed(b);                                    break; // Add MUL instruction
-            case "mulh": this.aluResult = Number((BigInt(signed(a)) * BigInt(signed(b))) >> 32n);   break; // Add MULH instruction break;
+            case "b":    this.aluResult = b;                                                            break;
+            case "add":  this.aluResult = signed(a + b);                                                break;
+            case "sll":  this.aluResult = a << unsignedSlice(b, 4, 0);                                  break;
+            case "slt":  this.aluResult = signed(a) < signed(b) ? 1 : 0;                                break;
+            case "sltu": this.aluResult = unsigned(a) < unsigned(b) ? 1 : 0;                            break;
+            case "xor":  this.aluResult = a ^ b  ;                                                      break;
+            case "srl":  this.aluResult = a >>> unsignedSlice(b, 4, 0);                                 break;
+            case "sra":  this.aluResult = a >>  unsignedSlice(b, 4, 0);                                 break;
+            case "or":   this.aluResult = a | b;                                                        break;
+            case "and":  this.aluResult = a & b;                                                        break;
+            case "sub":  this.aluResult = signed(a - b);                                                break;
+            case "mul":  this.aluResult = signed(a) * signed(b);                                        break; // Add MUL instruction
+            case "mulh": this.aluResult = Number((BigInt(signed(a)) * BigInt(signed(b))) >> 32n);       break; // Add MULH instruction
+            case "mulhu":this.aluResult = Number((BigInt(unsigned(a)) * BigInt(unsigned(b))) >> 32n);   break; // Add MULHU instruction
+            //mulhu測資 x1 =fffff000 x2 =fffff000 結果 = ffffe000
+            case "mulhsu":this.aluResult = Number((BigInt(signed(a)) * BigInt(unsigned(b))) >> 32n);   break; // Add MULHU instruction
+            //mulhu測資 正數相乘 = 全0 負數乘正數 全F
+
         }
         this.branchTaken = this.datapath.branch && this.datapath.branch === "al";
 

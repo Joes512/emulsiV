@@ -49,6 +49,8 @@ const ASM_TABLE = {
     and   : "d12",
     mul   : "d12",  // Add MUL instruction
     mulh  : "d12",  // Add MULH instruction
+    mulhu : "d12",  // Add MULHU instruction
+    mulhsu : "d12", // Add MULHSU instruction
     mret  : "",
     // Pseudo-instructions
     nop    : "",

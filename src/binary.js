@@ -37,12 +37,16 @@ const F3_AND  = 7;
 const F3_MRET = 0;
 const F3_MUL  = 0;
 const F3_MULH  = 1;
+const F3_MULHU  = 3;
+const F3_MULHSU  = 2;
 // Funct7 opcodes.
 const F7_L    = 0;
 const F7_A    = 32;
 const F7_MRET = 24;
 const F7_MUL  = 1;
 const F7_MULH  = 1;
+const F7_MULHU  = 1;
+const F7_MULHSU  = 1;
 // Rs2/Rs1/Rd fixed values.
 const RS2_MRET = 2;
 const RS1_MRET = 0;
@@ -173,7 +177,9 @@ const INSTR_NAME_TO_FIELDS = {
     and   : [OP_REG   , F3_AND , F7_L],
     mret  : [OP_SYSTEM, F3_MRET, F7_MRET, RS2_MRET, RS1_MRET, RD_MRET],
     mul   : [OP_REG   , F3_MUL , F7_MUL],
-    mulh   : [OP_REG   , F3_MULH , F7_MULH]
+    mulh  : [OP_REG   , F3_MULH , F7_MULH],
+    mulhu : [OP_REG   , F3_MULHU , F7_MULHU],
+    mulhsu:[OP_REG    , F3_MULHSU , F7_MULHSU]
 };
 
 // Reverse INSTR_NAME_TO_FIELDS into a tree to decode field values.
