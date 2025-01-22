@@ -14,35 +14,47 @@ const OP_JAL    = 0x6F;
 const OP_SYSTEM = 0x73;
 
 // Funct3 opcodes.
-const F3_JALR = 0;
-const F3_BEQ  = 0;
-const F3_BNE  = 1;
-const F3_BLT  = 4;
-const F3_BGE  = 5;
-const F3_BLTU = 6;
-const F3_BGEU = 7;
-const F3_B    = 0;
-const F3_H    = 1;
-const F3_W    = 2;
-const F3_BU   = 4;
-const F3_HU   = 5;
-const F3_ADD  = 0;
-const F3_SL   = 1;
-const F3_SLT  = 2;
-const F3_SLTU = 3;
-const F3_XOR  = 4;
-const F3_SR   = 5;
-const F3_OR   = 6;
-const F3_AND  = 7;
-const F3_MRET = 0;
-const F3_MUL  = 0;
-
+const F3_JALR   = 0;
+const F3_BEQ    = 0;
+const F3_BNE    = 1;
+const F3_BLT    = 4;
+const F3_BGE    = 5;
+const F3_BLTU   = 6;
+const F3_BGEU   = 7;
+const F3_B      = 0;
+const F3_H      = 1;
+const F3_W      = 2;
+const F3_BU     = 4;
+const F3_HU     = 5;
+const F3_ADD    = 0;
+const F3_SL     = 1;
+const F3_SLT    = 2;
+const F3_SLTU   = 3;
+const F3_XOR    = 4;
+const F3_SR     = 5;
+const F3_OR     = 6;
+const F3_AND    = 7;
+const F3_MRET   = 0;
+const F3_MUL    = 0;
+const F3_MULH   = 1;
+const F3_MULHSU = 2;
+const F3_MULHU  = 3;
+const F3_DIV    = 4; 
+const F3_DIVU   = 5; 
+const F3_REM    = 6;
+const F3_REMU   = 7;
 // Funct7 opcodes.
-const F7_L    = 0;
-const F7_A    = 32;
-const F7_MRET = 24;
-const F7_MUL  = 1;
-
+const F7_L      = 0;
+const F7_A      = 32;
+const F7_MRET   = 24;
+const F7_MUL    = 1;
+const F7_MULH   = 1;
+const F7_MULHU  = 1;
+const F7_MULHSU = 1;
+const F7_DIV    = 1; 
+const F7_DIVU   = 1; 
+const F7_REM    = 1;
+const F7_REMU   = 1;
 // Rs2/Rs1/Rd fixed values.
 const RS2_MRET = 2;
 const RS1_MRET = 0;
@@ -153,26 +165,33 @@ const INSTR_NAME_TO_FIELDS = {
     sh    : [OP_STORE , F3_H],
     sw    : [OP_STORE , F3_W],
     addi  : [OP_IMM   , F3_ADD],
-    slli  : [OP_IMM   , F3_SL  , F7_L],
+    slli  : [OP_IMM   , F3_SL, F7_L],
     slti  : [OP_IMM   , F3_SLT],
     sltiu : [OP_IMM   , F3_SLTU],
-    xori  : [OP_IMM   , F3_XOR],
-    srli  : [OP_IMM   , F3_SR  , F7_L],
-    srai  : [OP_IMM   , F3_SR  , F7_A],
+    xori  : [OP_IMM   , F3_XOR] ,
+    srli  : [OP_IMM   , F3_SR       , F7_L],
+    srai  : [OP_IMM   , F3_SR       , F7_A],
     ori   : [OP_IMM   , F3_OR],
     andi  : [OP_IMM   , F3_AND],
-    add   : [OP_REG   , F3_ADD , F7_L],
-    sub   : [OP_REG   , F3_ADD , F7_A],
-    sll   : [OP_REG   , F3_SL  , F7_L],
-    slt   : [OP_REG   , F3_SLT , F7_L],
-    sltu  : [OP_REG   , F3_SLTU, F7_L],
-    xor   : [OP_REG   , F3_XOR , F7_L],
-    srl   : [OP_REG   , F3_SR  , F7_L],
-    sra   : [OP_REG   , F3_SR  , F7_A],
-    or    : [OP_REG   , F3_OR  , F7_L],
-    and   : [OP_REG   , F3_AND , F7_L],
-    mret  : [OP_SYSTEM, F3_MRET, F7_MRET, RS2_MRET, RS1_MRET, RD_MRET],
-    mul   : [OP_REG   , F3_MUL , F7_MUL]
+    add   : [OP_REG   , F3_ADD      , F7_L],
+    sub   : [OP_REG   , F3_ADD      , F7_A],
+    sll   : [OP_REG   , F3_SL       , F7_L],
+    slt   : [OP_REG   , F3_SLT      , F7_L],
+    sltu  : [OP_REG   , F3_SLTU     , F7_L],
+    xor   : [OP_REG   , F3_XOR      , F7_L],
+    srl   : [OP_REG   , F3_SR       , F7_L],
+    sra   : [OP_REG   , F3_SR       , F7_A],
+    or    : [OP_REG   , F3_OR       , F7_L],
+    and   : [OP_REG   , F3_AND      , F7_L],
+    mret  : [OP_SYSTEM, F3_MRET     , F7_MRET, RS2_MRET, RS1_MRET, RD_MRET],
+    mul   : [OP_REG   , F3_MUL      , F7_MUL],
+    mulh  : [OP_REG   , F3_MULH     , F7_MULH],
+    mulhu : [OP_REG   , F3_MULHU    , F7_MULHU],
+    mulhsu: [OP_REG   , F3_MULHSU   , F7_MULHSU],
+    div   : [OP_REG   , F3_DIV      , F7_DIV],
+    divu  : [OP_REG   , F3_DIVU     , F7_DIVU],
+    rem   : [OP_REG   , F3_REM      , F7_REM],
+    remu  : [OP_REG   , F3_REMU     , F7_REMU]
 };
 
 // Reverse INSTR_NAME_TO_FIELDS into a tree to decode field values.
